@@ -1,4 +1,6 @@
 Changes for PDL::IO::XLSX
+0.005   2020/09/02
+        - allow to bypass looks_like_number in add_row, by passing the value by reference to force value to be wrote as string
 
 0.004   2016/12/18
         - tuning Makefile.PL

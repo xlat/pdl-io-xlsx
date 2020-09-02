@@ -654,7 +654,7 @@ sub add_row {
   my @s_attr = map { $self->styles->get_style_attr($_) } @$format;
   for(my $c = 1; $c <= $cols; $c++) {
     my $val = $data->[$c-1];
-    if (looks_like_number($val)) {
+    if (!ref($val) && looks_like_number($val)) {
       if ($s_attr[$c-1]) {
         # add format/style attribute s="?"
         $xmlcells .= sprintf('<c r="%s"%s><v>%s</v></c>', $row2letter[$c-1] . $r, $s_attr[$c-1], $val);
@@ -663,8 +663,10 @@ sub add_row {
         # no format/style attribute s="?"
         $xmlcells .= sprintf('<c r="%s"><v>%s</v></c>', $row2letter[$c-1] . $r, $val);
       }
+      next;
     }
-    elsif (($val//'') ne '') {
+    $val = $$val if ref $val;
+    if (($val//'') ne '') {
       my $id = $self->strings->get_sstring_id($val);
       $xmlcells .= sprintf('<c r="%s" t="s"><v>%s</v></c>', $row2letter[$c-1] . $r, $id);
     }
